@@ -1,17 +1,54 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { useForm } from "react-hook-form";
+
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      yee: "",
+    };
+  }
+
+  onSubmit = (data) => {
+    this.setState({
+      yee: data.name,
+    });
+    console.log(data);
+  }
+
+  render(){
+    
+    return (
+        <>
+            <Form onSubmit={ this.onSubmit }/>
+            <Name name={ this.state.yee } />
+        </>
+    );
+  } 
+}
+
+function Form(props) {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  return (
+    <form onSubmit={handleSubmit(props.onSubmit)}>
+      <input defaultValue="test" {...register("name")} />
+
+      <input type="submit" />
+    </form>
+  )
+}
+
+function Name(props) {
+  return(
+    <p>{ props.name }</p>
+  )
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <App />,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
